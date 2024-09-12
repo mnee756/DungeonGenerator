@@ -2,16 +2,18 @@
 
 #include <vector>
 #include "Tile.h"
+#include "Rect.h"
+#include "Room.h"
 #include <SFML/Graphics.hpp>
 
-class Grid {
+class Grid : public Rect {
 public:
-    Grid(int rows, int cols, float tileSize);
+    Grid(int rows, int cols, float tileSize, int maxRoomSize = 10, int minRoomSize = 7);
 
     // Getters
-    int getRows() const;
-    int getCols() const;
-    float getTileSize() const;
+    int getRows() const { return m_rows; };
+    int getCols() const { return m_cols; };
+    float getTileSize() const { return m_tileSize; };
 
     // Setters
     void setTile(int row, int col, TileType type);
@@ -21,10 +23,17 @@ public:
 
 private:
     int m_rows, m_cols;
+    int m_maxRoomSize;
+    int m_minRoomSize;
     float m_tileSize;
     std::vector<std::vector<Tile>> grid;
+    std::vector<Room> m_rooms;
+
     void initGrid();
-    bool makeRoom(int x, int y, int width, int height);
-    void placeRooms(int numRooms = 3, int maxAttempts = 3);
+    bool makeRoom(Rect rect);
+    void connectRooms();
+    void hSplit(Rect rect);
+    void vSplit(Rect rect);
+    void split(Rect rect);
 };
 

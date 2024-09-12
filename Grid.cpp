@@ -1,26 +1,37 @@
 #include "Grid.h"
+#include "Math.h"
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
 
-Grid::Grid(int rows, int cols, float tileSize)
-    : m_rows(rows), m_cols(cols), m_tileSize(tileSize) 
+Grid::Grid(int rows, int cols, float tileSize, int maxRoomSize, int minRoomSize)
+    : m_rows(rows), m_cols(cols), m_tileSize(tileSize), m_maxRoomSize(maxRoomSize), 
+    m_minRoomSize(minRoomSize)
 {
-    
+
     initGrid();
-    placeRooms();
-}
-
-int Grid::getRows() const {
-    return m_rows;
-}
-
-int Grid::getCols() const {
-    return m_cols;
-}
-
-float Grid::getTileSize() const {
-    return m_tileSize;
+    //makeRoom(Rect(4, 6, 14, 16));
+    split(Rect(0, m_cols, 0, m_rows));
+    /*
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    std::cout << getRandom(-3, 33) << '\n';
+    */
 }
 
 void Grid::setTile(int row, int col, TileType type) {
@@ -75,56 +86,72 @@ void Grid::draw(sf::RenderWindow& window) const {
     }
 }
 
-bool Grid::makeRoom(int x, int y, int width, int height)
+bool Grid::makeRoom(Rect rect)
 {
     // Check if the room fits in the grid without going out of bounds
-    if (x + width >= m_cols || y + height >= m_rows) {
+    if (rect.right > m_cols || rect.left < 0 || rect.top > m_rows || rect.bottom < 0) {
         return false;  // Room does not fit
     }
     // Check for overlap with existing rooms (i.e., non-empty tiles)
-    for (int i = y; i < y + height; i++) {
-        for (int j = x; j < x + width; j++) {
-            if (grid[i][j].getType() != Empty) {
-                return false;  // Overlap detected
-            }
-        }
-    }
+    
     // If all checks pass, place the room (fill grid with Floor tiles)
-    for (int i = y; i < y + height; i++) {
-        for (int j = x; j < x + width; j++) {
-            grid[i][j].setType(Floor);  // Assuming 'Floor' is an enum type for empty space
+    for (int i = rect.left; i < rect.right; i++) {
+        for (int j = rect.bottom; j < rect.top; j++) {
+            grid[j][i].setType(Floor);  // Assuming 'Floor' is an enum type for empty space
         }
     }
     return true;  
 }
 
-void Grid::placeRooms(int numRooms, int maxAttempts) //probably want some input specifying relative size of rooms
+void Grid::connectRooms()
 {
-    int area = m_rows * m_cols;
-    int roomDims = sqrt(area / 10); //want a room to be roughly 1/10 size of grid
-    int attempts = 0;
 
-    for (int i = 0; i < numRooms; i++) {
-        bool roomPlaced = false;
+}
 
-        while (attempts < maxAttempts && !roomPlaced) {
-            int roomWidth = rand() % roomDims + 2;  // Random width between 3 and 8
-            int roomHeight = rand() % roomDims + 2; // Random height between 3 and 8
-            int x = rand() % (m_cols - roomWidth);
-            int y = rand() % (m_rows - roomHeight);
+void Grid::split(Rect rect)
+{
 
+    int w = rect.width();
+    int h = rect.height();
 
-            // Attempt to place the room with the given spacing
-            if (makeRoom(x, y, roomWidth, roomHeight)) {
-                roomPlaced = true;
-            }
-            else {
-                attempts++;
-            }
-        } 
-        if (attempts >= maxAttempts) {
-            std::cout << "Max attempts reached for room placement. Stopping.\n";
-            break;  // Stop if we exceed max attempts
+    if (w > m_maxRoomSize && h < m_minRoomSize)
+    {
+        vSplit(rect);
+    }
+    else if (h > m_maxRoomSize && h < m_minRoomSize) 
+    {
+        hSplit(rect);
+    }
+    else if (((static_cast<float>(std::rand())/RAND_MAX) <= (m_minRoomSize * m_minRoomSize / rect.area()) && w <= m_maxRoomSize && h <= m_maxRoomSize)
+        || w < m_minRoomSize || h < m_minRoomSize)
+    {
+        // if not too big, or gets to a certain lower bound, make room. More probable the smaller the room is. 
+        // make Room
+        makeRoom(rect);
+    }
+    else
+    {
+        if ((static_cast<float>(std::rand()) / RAND_MAX) < (w - 2) / (w + h - 4))
+        {
+            vSplit(rect);
+        }
+        else
+        {
+            hSplit(rect);
         }
     }
+}
+
+void Grid::vSplit(Rect rect)
+{
+    int div = getRandom(rect.left + 3, rect.right - 3);
+    split(Rect(rect.left, div, rect.bottom, rect.top));
+    split(Rect(div, rect.right, rect.bottom, rect.top));
+}
+
+void Grid::hSplit(Rect rect)
+{
+    int div = getRandom(rect.bottom + 3, rect.top - 3);
+    split(Rect(rect.left, rect.right, rect.bottom, div));
+    split(Rect(rect.left, rect.right, div, rect.top));
 }
