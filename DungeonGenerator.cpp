@@ -3,8 +3,8 @@
 #include "Grid.h"
 
 int main() {
-    const int rows = 30;
-    const int cols = 30;
+    const int rows = 45;
+    const int cols = 45;
     const float tileSize = 20.0f;
 
     sf::RenderWindow window(sf::VideoMode(cols * tileSize, rows * tileSize), "Dungeon Generator");

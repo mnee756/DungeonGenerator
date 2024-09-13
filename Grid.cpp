@@ -94,12 +94,16 @@ bool Grid::makeRoom(Rect rect)
     }
     // Check for overlap with existing rooms (i.e., non-empty tiles)
     
+    Rect roomRect = Rect(rect.left + 1, rect.right - 1, rect.bottom + 1, rect.top - 1);
     // If all checks pass, place the room (fill grid with Floor tiles)
-    for (int i = rect.left; i < rect.right; i++) {
-        for (int j = rect.bottom; j < rect.top; j++) {
+    for (int i = roomRect.left; i < roomRect.right; i++) {
+        for (int j = roomRect.bottom; j < roomRect.top; j++) {
             grid[j][i].setType(Floor);  // Assuming 'Floor' is an enum type for empty space
         }
     }
+
+    m_rooms.emplace_back(roomRect, Normal);
+
     return true;  
 }
 
@@ -118,11 +122,11 @@ void Grid::split(Rect rect)
     {
         vSplit(rect);
     }
-    else if (h > m_maxRoomSize && h < m_minRoomSize) 
+    else if (h > m_maxRoomSize && w < m_minRoomSize) 
     {
         hSplit(rect);
     }
-    else if (((static_cast<float>(std::rand())/RAND_MAX) <= (m_minRoomSize * m_minRoomSize / rect.area()) && w <= m_maxRoomSize && h <= m_maxRoomSize)
+    else if (((static_cast<float>(std::rand())/RAND_MAX) <= (static_cast<float>(m_minRoomSize * m_minRoomSize) / rect.area()) && w <= m_maxRoomSize && h <= m_maxRoomSize)
         || w < m_minRoomSize || h < m_minRoomSize)
     {
         // if not too big, or gets to a certain lower bound, make room. More probable the smaller the room is. 
@@ -131,7 +135,7 @@ void Grid::split(Rect rect)
     }
     else
     {
-        if ((static_cast<float>(std::rand()) / RAND_MAX) < (w - 2) / (w + h - 4))
+        if ((static_cast<float>(std::rand()) / RAND_MAX) < static_cast<float>(w - 2) / static_cast<float>(w + h - 4))
         {
             vSplit(rect);
         }

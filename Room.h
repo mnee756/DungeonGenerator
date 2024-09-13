@@ -1,4 +1,5 @@
 #pragma once
+#include "Rect.h"
 
 enum RoomType
 {
@@ -10,21 +11,14 @@ enum RoomType
 class Room {
 public:
     // Constructor
-    Room(RoomType type, int x, int y, int width, int height)
-        : m_type(type), m_x(x), m_y(y), m_width(width), m_height(height) {};
+    Room(Rect rect, RoomType type = Normal);      
 
     // Getters
-    int getX() const { return m_x; };
-    int getY() const { return m_y; };
-    int getWidth() const { return m_width; };
-    int getHeight() const { return m_height; };
     RoomType getType() const { return m_type; };
 
     // Methods
-    bool intersects(const Room& other) const;
-
+    void setTiles();
 private:
     RoomType m_type;
-    int m_x, m_y;
-    int m_width, m_height;
+    int m_right, m_left, m_bottom, m_top;
 };
