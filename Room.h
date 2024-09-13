@@ -8,7 +8,7 @@ enum RoomType
     Trap,
 };
 
-class Room {
+class Room : public Rect{
 public:
     // Constructor
     Room(Rect rect, RoomType type = Normal);      
@@ -20,5 +20,4 @@ public:
     void setTiles();
 private:
     RoomType m_type;
-    int m_right, m_left, m_bottom, m_top;
 };

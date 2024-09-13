@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="DungeonGenerator.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>

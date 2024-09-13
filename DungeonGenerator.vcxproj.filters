@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{8ff02de4-5685-482b-9f27-a17fdb77f8cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{2ce8e5da-4a36-47c0-b98c-b7c6c4113cd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DungeonGenerator.cpp">
@@ -29,6 +32,9 @@
     </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

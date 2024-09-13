@@ -8,7 +8,7 @@
 
 class Grid : public Rect {
 public:
-    Grid(int rows, int cols, float tileSize, int maxRoomSize = 14, int minRoomSize = 9);
+    Grid(int rows, int cols, float tileSize, int maxRoomSize = 20, int minRoomSize = 14);
 
     // Getters
     int getRows() const { return m_rows; };

@@ -94,7 +94,7 @@ bool Grid::makeRoom(Rect rect)
     }
     // Check for overlap with existing rooms (i.e., non-empty tiles)
     
-    Rect roomRect = Rect(rect.left + 1, rect.right - 1, rect.bottom + 1, rect.top - 1);
+    Room roomRect = Room(rect);
     // If all checks pass, place the room (fill grid with Floor tiles)
     for (int i = roomRect.left; i < roomRect.right; i++) {
         for (int j = roomRect.bottom; j < roomRect.top; j++) {
@@ -135,7 +135,7 @@ void Grid::split(Rect rect)
     }
     else
     {
-        if ((static_cast<float>(std::rand()) / RAND_MAX) < static_cast<float>(w - 2) / static_cast<float>(w + h - 4))
+        if ((static_cast<float>(std::rand()) / RAND_MAX) < static_cast<float>(w) / static_cast<float>(w + h))
         {
             vSplit(rect);
         }
