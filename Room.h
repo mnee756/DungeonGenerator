@@ -1,5 +1,4 @@
 #pragma once
-#include "Rect.h"
 
 enum RoomType
 {
@@ -8,10 +7,11 @@ enum RoomType
     Trap,
 };
 
-class Room : public Rect{
+class Room {
 public:
+    int left, right, top, bottom;
     // Constructor
-    Room(Rect rect, RoomType type = Normal);      
+    Room(int l, int r, int t, int b, RoomType type = Normal);      
 
     // Getters
     RoomType getType() const { return m_type; };

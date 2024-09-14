@@ -9,7 +9,7 @@
 class Grid : public Rect {
 public:
     Grid(int rows, int cols, float tileSize, int maxRoomSize = 20, int minRoomSize = 14);
-
+    std::vector<std::vector<Tile>> grid;
     // Getters
     int getRows() const { return m_rows; };
     int getCols() const { return m_cols; };
@@ -26,7 +26,7 @@ private:
     int m_maxRoomSize;
     int m_minRoomSize;
     float m_tileSize;
-    std::vector<std::vector<Tile>> grid;
+    
     std::vector<Room> m_rooms;
 
     void initGrid();

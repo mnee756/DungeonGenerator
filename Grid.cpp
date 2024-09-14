@@ -10,28 +10,9 @@ Grid::Grid(int rows, int cols, float tileSize, int maxRoomSize, int minRoomSize)
 {
 
     initGrid();
-    //makeRoom(Rect(4, 6, 14, 16));
-    split(Rect(0, m_cols, 0, m_rows));
-    /*
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    std::cout << getRandom(-3, 33) << '\n';
-    */
+    Rect BigRect = Rect(0, m_cols, 0, m_rows);          // no siblings or parents :(
+    split(BigRect);                                     // BigRect now houses all rects and rooms. 
+
 }
 
 void Grid::setTile(int row, int col, TileType type) {
@@ -86,26 +67,7 @@ void Grid::draw(sf::RenderWindow& window) const {
     }
 }
 
-bool Grid::makeRoom(Rect rect)
-{
-    // Check if the room fits in the grid without going out of bounds
-    if (rect.right > m_cols || rect.left < 0 || rect.top > m_rows || rect.bottom < 0) {
-        return false;  // Room does not fit
-    }
-    // Check for overlap with existing rooms (i.e., non-empty tiles)
-    
-    Room roomRect = Room(rect);
-    // If all checks pass, place the room (fill grid with Floor tiles)
-    for (int i = roomRect.left; i < roomRect.right; i++) {
-        for (int j = roomRect.bottom; j < roomRect.top; j++) {
-            grid[j][i].setType(Floor);  // Assuming 'Floor' is an enum type for empty space
-        }
-    }
 
-    m_rooms.emplace_back(roomRect, Normal);
-
-    return true;  
-}
 
 void Grid::connectRooms()
 {
@@ -131,7 +93,7 @@ void Grid::split(Rect rect)
     {
         // if not too big, or gets to a certain lower bound, make room. More probable the smaller the room is. 
         // make Room
-        makeRoom(rect);
+        rect.makeRoom(grid);
     }
     else
     {
@@ -149,13 +111,21 @@ void Grid::split(Rect rect)
 void Grid::vSplit(Rect rect)
 {
     int div = getRandom(rect.left + 3, rect.right - 3);
-    split(Rect(rect.left, div, rect.bottom, rect.top));
-    split(Rect(div, rect.right, rect.bottom, rect.top));
+    Rect child1 =  Rect(rect.left, div, rect.bottom, rect.top);
+    Rect child2 = Rect(div, rect.right, rect.bottom, rect.top);
+    rect.addChild(child1);
+    rect.addChild(child2);
+    split(child1);
+    split(child2);
 }
 
 void Grid::hSplit(Rect rect)
 {
     int div = getRandom(rect.bottom + 3, rect.top - 3);
-    split(Rect(rect.left, rect.right, rect.bottom, div));
-    split(Rect(rect.left, rect.right, div, rect.top));
+    Rect child1 =  Rect(rect.left, rect.right, rect.bottom, div);
+    Rect child2 = Rect(rect.left, rect.right, div, rect.top);
+    rect.addChild(child1);
+    rect.addChild(child2);
+    split(child1);
+    split(child2);
 }
