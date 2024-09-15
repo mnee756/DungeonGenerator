@@ -12,7 +12,7 @@ Grid::Grid(int rows, int cols, float tileSize, int maxRoomSize, int minRoomSize)
     initGrid();
     Rect BigRect = Rect(0, m_cols, 0, m_rows);          // no siblings or parents :(
     split(BigRect);                                     // BigRect now houses all rects and rooms. 
-
+    BigRect.connectRooms(grid); 
 }
 
 void Grid::setTile(int row, int col, TileType type) {
@@ -67,14 +67,7 @@ void Grid::draw(sf::RenderWindow& window) const {
     }
 }
 
-
-
-void Grid::connectRooms()
-{
-
-}
-
-void Grid::split(Rect rect)
+void Grid::split(Rect& rect)
 {
 
     int w = rect.width();
@@ -108,24 +101,24 @@ void Grid::split(Rect rect)
     }
 }
 
-void Grid::vSplit(Rect rect)
+void Grid::vSplit(Rect& rect)
 {
     int div = getRandom(rect.left + 3, rect.right - 3);
     Rect child1 =  Rect(rect.left, div, rect.bottom, rect.top);
     Rect child2 = Rect(div, rect.right, rect.bottom, rect.top);
-    rect.addChild(child1);
-    rect.addChild(child2);
     split(child1);
     split(child2);
+    rect.addChild(child1);
+    rect.addChild(child2);   
 }
 
-void Grid::hSplit(Rect rect)
+void Grid::hSplit(Rect& rect)
 {
     int div = getRandom(rect.bottom + 3, rect.top - 3);
     Rect child1 =  Rect(rect.left, rect.right, rect.bottom, div);
     Rect child2 = Rect(rect.left, rect.right, div, rect.top);
-    rect.addChild(child1);
-    rect.addChild(child2);
     split(child1);
     split(child2);
+    rect.addChild(child1);
+    rect.addChild(child2);
 }

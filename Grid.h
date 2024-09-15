@@ -30,10 +30,8 @@ private:
     std::vector<Room> m_rooms;
 
     void initGrid();
-    bool makeRoom(Rect rect);
-    void connectRooms();
-    void hSplit(Rect rect);
-    void vSplit(Rect rect);
-    void split(Rect rect);
+    void hSplit(Rect& rect);
+    void vSplit(Rect& rect);
+    void split(Rect& rect);
 };
 
