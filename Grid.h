@@ -16,7 +16,7 @@ public:
     float getTileSize() const { return m_tileSize; };
 
     // Setters
-    void setTile(int row, int col, TileType type);
+    void setTile(int row, int col, TileTexture type);
 
     // Methods
     void draw(sf::RenderWindow& window) const;

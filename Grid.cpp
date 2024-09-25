@@ -15,10 +15,10 @@ Grid::Grid(int rows, int cols, float tileSize, int maxRoomSize, int minRoomSize)
     BigRect.connectRooms(grid); 
 }
 
-void Grid::setTile(int row, int col, TileType type) {
+void Grid::setTile(int row, int col, TileTexture type) {
     if (row >= 0 && row < m_rows && col >= 0 && col < m_cols) 
     {
-        grid[row][col].setType(type);
+        grid[row][col].setTexture(type);
     }
 }
 
@@ -40,19 +40,13 @@ void Grid::draw(sf::RenderWindow& window) const {
             sf::RectangleShape shape(sf::Vector2f(m_tileSize - 1, m_tileSize - 1));
             shape.setPosition(j * m_tileSize, i * m_tileSize);
 
-            switch (grid[i][j].getType())
+            switch (grid[i][j].getTexture())
             {
             case Empty:
                 shape.setFillColor(sf::Color::White);
                 break;
             case Wall:
                 shape.setFillColor(sf::Color::Black);
-                break;
-            case Player:
-                shape.setFillColor(sf::Color::Blue);  
-                break;
-            case Enemy:
-                shape.setFillColor(sf::Color::Red); 
                 break;
             case Floor:
                 shape.setFillColor(sf::Color::Magenta);

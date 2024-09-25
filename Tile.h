@@ -2,30 +2,30 @@
 
 #include <SFML/Graphics.hpp>
 
-enum TileType 
+enum TileTexture 
 { 
     Empty,
     Floor,
     Wall,
-    Player,
-    Enemy,
-    Door,
+    Water,
+    ClosedDoor,
+    OpenDoor,
 };
 
 class Tile {
 public:
-    Tile(TileType type, int x, int y)
-        : m_type(type), m_x(x), m_y(y) {};
+    Tile(TileTexture texture, int x, int y)
+        : m_texture(texture), m_x(x), m_y(y) {};
 
     // Getters
-    TileType getType() const { return m_type; };
+    TileTexture getTexture() const { return m_texture; };
     int getX() const { return m_x; };
     int getY() const { return m_y; };
 
     // Setters
-    void setType(TileType newType) { m_type = newType; };
+    void setTexture(TileTexture newTexture) { m_texture = newTexture; };
 private:
-    TileType m_type;
+    TileTexture m_texture;
     int m_x;
     int m_y;
 

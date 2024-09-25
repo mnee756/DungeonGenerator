@@ -15,7 +15,7 @@ bool Rect::makeRoom(std::vector<std::vector<Tile>>& grid)
     // If all checks pass, place the room (fill grid with Floor tiles)
     for (int i = room->left; i < room->right; i++) {
         for (int j = room->bottom; j < room->top; j++) {
-            grid[j][i].setType(Floor);
+            grid[j][i].setTexture(Floor);
         }
     }
     return true;
@@ -60,15 +60,15 @@ std::vector<std::vector<int>> Rect::pathfind(std::vector<std::vector<Tile>>& gri
         // Move toward p2[0]
         x += (p2[0] > x) ? 1 : -1;
 
-        if (grid[p1[1]][x].getType() == Floor)
+        if (grid[p1[0]][x].getTexture() == Floor)
         {
-            if ((*children)[0].pointIsIn(std::vector<int>{x, p1[1]}))
+            if ((*children)[0].pointIsIn(std::vector<int>{x, p1[0]}))
             {
                 start = std::vector<int>{ x, p1[1] };
             }
-            else if ((*children)[1].pointIsIn(std::vector<int>{x, p1[1]}))
+            else if ((*children)[1].pointIsIn(std::vector<int>{x, p1[0]}))
             {
-                end = std::vector<int>{ x, p1[1] };
+                end = std::vector<int>{ x, p1[0] };
                 return { start, end };
             }
         }
@@ -79,7 +79,7 @@ std::vector<std::vector<int>> Rect::pathfind(std::vector<std::vector<Tile>>& gri
         // Move toward p2[1]
         y += (p2[1] > y) ? 1 : -1;
 
-        if (grid[y][p2[0]].getType() == Floor)
+        if (grid[y][p2[0]].getTexture() == Floor)
         {
             if ((*children)[0].pointIsIn(std::vector<int>{p2[0], y}))
             {
@@ -106,7 +106,7 @@ void Rect::connectCoords(std::vector<int> p1, std::vector<int> p2,
         int end_x = std::max(p1[0], p2[0]);
         for (int x = start_x; x <= end_x; ++x) {
             if (p1[1] >= 0 && p1[1] < grid.size() && x >= 0 && x < grid[p1[1]].size()) {
-                grid[p1[1]][x].setType(Floor);
+                grid[p1[1]][x].setTexture(Floor);
             }
         }
     }
@@ -117,7 +117,7 @@ void Rect::connectCoords(std::vector<int> p1, std::vector<int> p2,
         int end_y = std::max(p1[1], p2[1]);
         for (int y = start_y; y <= end_y; ++y) {
             if (y >= 0 && y < grid.size() && p2[0] >= 0 && p2[0] < grid[y].size()) {
-                grid[y][p2[0]].setType(Floor);
+                grid[y][p2[0]].setTexture(Floor);
             }
         }
     }
@@ -133,7 +133,7 @@ std::vector<int> Rect::sampleFloor(std::vector<std::vector<Tile>>& grid)
     {
         x = getRandom(left+1, right-1); //column
         y = getRandom(bottom+1, top-1); //row    
-        if (grid[y][x].getType() == Floor)
+        if (grid[y][x].getTexture() == Floor)
         {
             isFloor = true;
         }
