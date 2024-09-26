@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
+
 #include "Grid.h"
+#include "Actor.h"
 
 int main() {
     const int rows = 45;
@@ -9,6 +12,10 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(cols * tileSize, rows * tileSize), "Dungeon Generator");
     Grid grid(rows, cols, tileSize);
+    //Actor hero(Hostility::Hero, std::vector<int>( {5, 5}) );
+    std::shared_ptr<Actor> hero = std::make_shared<Actor>(Hostility::Hero, std::vector<int>({ 5, 5 }));
+    grid.grid[5][5].setActor(hero);
+
 
     while (window.isOpen()) {
         sf::Event event;

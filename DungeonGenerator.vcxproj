@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="DungeonGenerator.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="Tile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="Tile.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -132,21 +149,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="DungeonGenerator.cpp" />
-    <ClCompile Include="src\Grid.cpp" />
-    <ClCompile Include="src\Math.cpp" />
-    <ClCompile Include="src\Rect.cpp" />
-    <ClCompile Include="src\Room.cpp" />
-    <ClCompile Include="src\Tile.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Grid.h" />
-    <ClInclude Include="include\Math.h" />
-    <ClInclude Include="include\Rect.h" />
-    <ClInclude Include="include\Room.h" />
-    <ClInclude Include="include\Tile.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

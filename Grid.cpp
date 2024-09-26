@@ -1,5 +1,6 @@
 #include "Grid.h"
 #include "Math.h"
+#include "Actor.h"
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
@@ -54,6 +55,28 @@ void Grid::draw(sf::RenderWindow& window) const {
             default:
                 shape.setFillColor(sf::Color::Green);  // Fallback color for unknown types
                 break;
+            }
+            if (grid[i][j].hasActor())
+            {
+                switch (grid[i][j].getActor()->getHostility())
+                {
+                case Hostility::Hero:
+                    shape.setFillColor(sf::Color::Yellow);
+                    break;
+                case Hostility::Enemy:
+                    shape.setFillColor(sf::Color::Red);
+                    break;
+                case Hostility::Neutral:
+                    shape.setFillColor(sf::Color::Green);
+                    break;
+                case Hostility::Allied:
+                    shape.setFillColor(sf::Color::Blue);
+                    break;
+                default:
+                    shape.setFillColor(sf::Color::Black);
+                    break;
+                }
+                
             }
 
             window.draw(shape);
