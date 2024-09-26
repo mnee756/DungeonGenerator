@@ -13,25 +13,25 @@ Grid::Grid(int rows, int cols, float tileSize, int maxRoomSize, int minRoomSize)
     initGrid();
     Rect BigRect = Rect(0, m_cols, 0, m_rows);          // no siblings or parents :(
     split(BigRect);                                     // BigRect now houses all rects and rooms. 
-    BigRect.connectRooms(grid); 
+    BigRect.connectRooms(tiles); 
 }
 
 void Grid::setTile(int row, int col, TileTexture type) {
     if (row >= 0 && row < m_rows && col >= 0 && col < m_cols) 
     {
-        grid[row][col].setTexture(type);
+        tiles[row][col].setTexture(type);
     }
 }
 
 void Grid::initGrid() {
-    grid.clear();  // Clear the existing grid if needed
+    tiles.clear();  // Clear the existing grid if needed
 
     for (int i = 0; i < m_rows; i++) {
         std::vector<Tile> row;
         for (int j = 0; j < m_cols; j++) {
             row.emplace_back(Empty, j, i);  // All tiles are Empty
         }
-        grid.push_back(row);
+        tiles.push_back(row);
     }
 }
 
@@ -41,7 +41,7 @@ void Grid::draw(sf::RenderWindow& window) const {
             sf::RectangleShape shape(sf::Vector2f(m_tileSize - 1, m_tileSize - 1));
             shape.setPosition(j * m_tileSize, i * m_tileSize);
 
-            switch (grid[i][j].getTexture())
+            switch (tiles[i][j].getTexture())
             {
             case Empty:
                 shape.setFillColor(sf::Color::White);
@@ -56,9 +56,9 @@ void Grid::draw(sf::RenderWindow& window) const {
                 shape.setFillColor(sf::Color::Green);  // Fallback color for unknown types
                 break;
             }
-            if (grid[i][j].hasActor())
+            if (tiles[i][j].hasActor())
             {
-                switch (grid[i][j].getActor()->getHostility())
+                switch (tiles[i][j].getActor()->getHostility())
                 {
                 case Hostility::Hero:
                     shape.setFillColor(sf::Color::Yellow);
@@ -103,7 +103,7 @@ void Grid::split(Rect& rect)
     {
         // if not too big, or gets to a certain lower bound, make room. More probable the smaller the room is. 
         // make Room
-        rect.makeRoom(grid);
+        rect.makeRoom(tiles);
     }
     else
     {
