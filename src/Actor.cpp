@@ -1,5 +1,5 @@
 #include "Actor.h"
-#include "Math.h"
+#include "Mathf.h"
 #include "Grid.h"
 
 void Actor::removeActorFromTile(Grid& grid) {

@@ -1,6 +1,6 @@
 #include "Rect.h"
 #include <cmath>
-#include "Math.h"
+#include "Mathf.h"
 #include <iostream>
 
 std::vector<int> Rect::center() const
